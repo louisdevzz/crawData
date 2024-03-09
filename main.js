@@ -22,11 +22,10 @@ function saveJson(json, filename) {
         finality: "optimistic",
     }).then((res)=>{
         const rs = (JSON.parse(Buffer.from(res.result).toString()));
-        Object.values(rs).map((project)=>{
+        Object.values(rs).map((project,index)=>{
             //console.log("project",project.id)
             try{
                 if(project.status === "Approved"){
-                    
                     provider.query({
                         request_type: "call_function",
                         account_id: "social.near",
@@ -40,9 +39,11 @@ function saveJson(json, filename) {
                         Object.keys(result).forEach((key)=>{
                             Object.values(result).forEach((value)=>{
                                 const data = {
+                                    index:index,
                                     accountId: project.id == key && key,
                                     data:value
                                 }
+
                                 allProject.push(data)
                                //console.log("data",allProject.push(data))
                                console.log("data",allProject.length > 1 && allProject)
